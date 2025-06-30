@@ -11,16 +11,26 @@ def estilo_boton(boton):
     boton.bind("<Enter>", lambda e: boton.config(bg="#e74c3c"))
     boton.bind("<Leave>", lambda e: boton.config(bg=tema_rojo))
 
+def estilo_ventana(ventana):
+    ventana.configure(bg=tema_fondo)
+
+def estilo_label(label):
+    label.configure(bg=tema_fondo, fg=tema_texto, font=("Arial", 12))
+
 def mostrar_menu_principal():
     ventana = tk.Toplevel()
     ventana.title("Inicio")
     ventana.geometry("800x400")
-    ventana.configure(bg=tema_fondo)
+    estilo_ventana(ventana)
 
     from register import registrar_usuario
     from login import iniciar_sesion
 
-    tk.Label(ventana, text="Bienvenido al sistema de biblioteca", font=("Arial", 16, "bold"), fg=tema_texto, bg=tema_fondo).pack(pady=20)
+    label_bienvenida = tk.Label(ventana, text="Bienvenido al sistema de biblioteca", font=("Arial", 16, "bold"))
+    estilo_label(label_bienvenida)
+    label_bienvenida.config(font=("Arial", 16, "bold"))
+    label_bienvenida.pack(pady=20)
+
     btn_registrar = tk.Button(ventana, text="Registrarse", width=20, command=lambda: [ventana.destroy(), registrar_usuario()])
     estilo_boton(btn_registrar)
     btn_registrar.pack(pady=10)
