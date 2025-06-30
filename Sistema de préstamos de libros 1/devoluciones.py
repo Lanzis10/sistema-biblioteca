@@ -3,18 +3,56 @@ from tkinter import ttk, messagebox
 from db import conectar
 import datetime
 
+def estilo_ventana(ventana):
+    tema_fondo = "#ffffff"
+    ventana.configure(bg=tema_fondo)
+
+def estilo_label(label):
+    tema_fondo = "#ffffff"
+    tema_texto = "#c0392b"
+    label.configure(bg=tema_fondo, fg=tema_texto, font=("Arial", 12))
+
+def estilo_tabla(tabla):
+    style = ttk.Style()
+    style.theme_use('default')
+    style.configure("Treeview",
+                    background="#fff",
+                    foreground="#c0392b",
+                    rowheight=25,
+                    fieldbackground="#fff",
+                    font=("Arial", 11))
+    style.configure("Treeview.Heading",
+                    background="#c0392b",
+                    foreground="#fff",
+                    font=("Arial", 12, "bold"))
+    style.map('Treeview', background=[('selected', '#e74c3c')], foreground=[('selected', '#fff')])
+
+def estilo_boton(boton):
+    tema_fondo = "#c0392b"
+    tema_texto = "#ffffff"
+    boton.configure(bg=tema_fondo, fg=tema_texto, font=("Arial", 12, "bold"))
+
 def registrar_devolucion(ventana_anterior, id_usuario, nombre_usuario):
     ventana_anterior.destroy()
     ventana = tk.Toplevel()
     ventana.title("Registrar Devolución")
     ventana.geometry("800x500")
+    estilo_ventana(ventana)
 
-    tk.Label(ventana, text="Préstamos Activos", font=("Arial", 16)).pack(pady=10)
+    label_prestamos = tk.Label(ventana, text="Préstamos Activos", font=("Arial", 16, "bold"))
+    estilo_label(label_prestamos)
+    label_prestamos.config(font=("Arial", 16, "bold"))
+    label_prestamos.pack(pady=10)
 
     tabla = ttk.Treeview(ventana, columns=("ID", "Solicitante", "Libro", "Fecha préstamo", "Fecha estimada devolución"), show="headings")
+    estilo_tabla(tabla)
+    tabla.column("ID", width=60)
+    tabla.column("Solicitante", width=140)
+    tabla.column("Libro", width=180)
+    tabla.column("Fecha préstamo", width=120)
+    tabla.column("Fecha estimada devolución", width=160)
     for col in tabla["columns"]:
         tabla.heading(col, text=col)
-        tabla.column(col, width=150)
     tabla.pack(padx=10, pady=10, fill="both", expand=True)
 
     # Cargar préstamos activos
@@ -93,14 +131,18 @@ def registrar_devolucion(ventana_anterior, id_usuario, nombre_usuario):
 
 
     # Botones
-    frame_botones = tk.Frame(ventana)
+    frame_botones = tk.Frame(ventana, bg="#ffffff")
     frame_botones.pack(pady=15)
 
-    tk.Button(frame_botones, text="Registrar Devolución", command=registrar).grid(row=0, column=0, padx=10)
+    btn_registrar = tk.Button(frame_botones, text="Registrar Devolución", command=registrar)
+    estilo_boton(btn_registrar)
+    btn_registrar.grid(row=0, column=0, padx=10)
 
     def volver():
         ventana.destroy()
         from home import mostrar_home
         mostrar_home(id_usuario, nombre_usuario)
 
-    tk.Button(frame_botones, text="Volver", command=volver).grid(row=0, column=1, padx=10)
+    btn_volver = tk.Button(frame_botones, text="Volver", command=volver)
+    estilo_boton(btn_volver)
+    btn_volver.grid(row=0, column=1, padx=10)
