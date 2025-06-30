@@ -13,12 +13,18 @@ def estilo_boton(boton):
     boton.bind("<Enter>", lambda e: boton.config(bg="#e74c3c"))
     boton.bind("<Leave>", lambda e: boton.config(bg=tema_rojo))
 
+def estilo_ventana(ventana):
+    ventana.configure(bg=tema_fondo)
+
+def estilo_label(label):
+    label.configure(bg=tema_fondo, fg=tema_texto, font=("Arial", 12))
+
 def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
     ventana_anterior.destroy()
     ventana = tk.Toplevel()
     ventana.title("Gestión de Libros")
     ventana.geometry("800x500")
-    ventana.configure(bg=tema_fondo)
+    estilo_ventana(ventana)
 
     # Función para cargar libros
     # ... (importaciones y encabezado igual)
@@ -52,7 +58,14 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
         ventana_agregar = tk.Toplevel(ventana)
         ventana_agregar.title("Agregar Libro")
         ventana_agregar.geometry("400x400")
-        ventana_agregar.configure(bg=tema_fondo)
+        estilo_ventana(ventana_agregar)
+
+        # Selección de tipo de solicitante
+        label_tipo = tk.Label(ventana_agregar, text="Tipo de solicitante", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold"))
+        estilo_label(label_tipo)
+        label_tipo.pack()
+        combo_tipo = ttk.Combobox(ventana_agregar, values=["Estudiante", "Profesor"], state="readonly")
+        combo_tipo.pack()
 
         tk.Label(ventana_agregar, text="Código", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_codigo = tk.Entry(ventana_agregar)
@@ -152,7 +165,7 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
         ventana_editar = tk.Toplevel(ventana)
         ventana_editar.title("Editar Libro")
         ventana_editar.geometry("400x450")
-        ventana_editar.configure(bg=tema_fondo)
+        estilo_ventana(ventana_editar)
 
         tk.Label(ventana_editar, text="Código", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_codigo = tk.Entry(ventana_editar)
@@ -241,9 +254,17 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
     # Tabla
     columnas = ("ID", "Código", "Título", "Autor", "Editorial", "Descripción", "Categoría","Disponibilidad")
     tabla = ttk.Treeview(ventana, columns=columnas, show="headings")
+    # Ajuste de ancho para cada columna
+    tabla.column("ID", width=50)
+    tabla.column("Código", width=80)
+    tabla.column("Título", width=180)
+    tabla.column("Autor", width=120)
+    tabla.column("Editorial", width=120)
+    tabla.column("Descripción", width=180)
+    tabla.column("Categoría", width=120)
+    tabla.column("Disponibilidad", width=110)
     for col in columnas:
         tabla.heading(col, text=col)
-        tabla.column(col, width=100)
     tabla.pack(fill="both", expand=True, padx=10, pady=10)
 
     def buscar_libros():
