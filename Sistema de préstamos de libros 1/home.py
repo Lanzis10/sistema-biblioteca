@@ -3,6 +3,11 @@ from libros import gestionar_libros
 from prestamos import ver_prestamos
 from devoluciones import registrar_devolucion
 
+
+tema_fondo = "#ffffff"  
+tema_rojo = "#c0392b"  
+tema_texto = "#c0392b"  
+
 def mostrar_home(id_usuario, nombre_usuario):
     ventana = tk.Tk()
     ventana.title("Sistema de Biblioteca")
