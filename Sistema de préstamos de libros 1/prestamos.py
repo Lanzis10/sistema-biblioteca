@@ -3,15 +3,26 @@ from tkinter import messagebox, ttk
 from db import conectar
 import datetime
 
+# Colores de la interfaz
+tema_fondo = "#ffffff"  # blanco
+tema_rojo = "#c0392b"  # rojo fuerte
+tema_texto = "#c0392b"  # rojo para textos
+
+def estilo_boton(boton):
+    boton.configure(bg=tema_rojo, fg="white", activebackground="#e74c3c", activeforeground="white", borderwidth=0, font=("Arial", 12, "bold"))
+    boton.bind("<Enter>", lambda e: boton.config(bg="#e74c3c"))
+    boton.bind("<Leave>", lambda e: boton.config(bg=tema_rojo))
+
 def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
     ventana_anterior.destroy()
     ventana = tk.Toplevel()
     ventana.title("Gestionar Préstamos")
     ventana.geometry("800x500")
+    ventana.configure(bg=tema_fondo)
 
-    tk.Label(ventana, text="Gestión de Préstamos", font=("Arial", 16)).pack(pady=10)
+    tk.Label(ventana, text="Gestión de Préstamos", font=("Arial", 16, "bold"), fg=tema_texto, bg=tema_fondo).pack(pady=10)
 
-    frame_botones = tk.Frame(ventana)
+    frame_botones = tk.Frame(ventana, bg=tema_fondo)
     frame_botones.pack(pady=10)
 
     def volver_menu():
@@ -23,24 +34,25 @@ def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
         ventana_prestamo = tk.Toplevel(ventana)
         ventana_prestamo.title("Registrar Préstamo")
         ventana_prestamo.geometry("450x550")
+        ventana_prestamo.configure(bg=tema_fondo)
 
-        tk.Label(ventana_prestamo, text="Tipo de solicitante:").pack()
+        tk.Label(ventana_prestamo, text="Tipo de solicitante:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         combo_tipo = ttk.Combobox(ventana_prestamo, values=["estudiante", "profesor"], state="readonly")
         combo_tipo.pack()
 
-        tk.Label(ventana_prestamo, text="Nombre completo:").pack()
+        tk.Label(ventana_prestamo, text="Nombre completo:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_nombre = tk.Entry(ventana_prestamo)
         entry_nombre.pack()
 
-        tk.Label(ventana_prestamo, text="RUT:").pack()
+        tk.Label(ventana_prestamo, text="RUT:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_rut = tk.Entry(ventana_prestamo)
         entry_rut.pack()
 
-        tk.Label(ventana_prestamo, text="Correo (@inacapmail.cl):").pack()
+        tk.Label(ventana_prestamo, text="Correo (@inacapmail.cl):", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_correo = tk.Entry(ventana_prestamo)
         entry_correo.pack()
 
-        tk.Label(ventana_prestamo, text="Libro a prestar:").pack()
+        tk.Label(ventana_prestamo, text="Libro a prestar:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         combo_libros = ttk.Combobox(ventana_prestamo, state="readonly")
         combo_libros.pack()
 
@@ -59,9 +71,8 @@ def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
         combo_libros["values"] = list(libro_dict.keys())
 
         fecha_hoy = datetime.date.today()
-        tk.Label(ventana_prestamo, text=f"Fecha de préstamo: {fecha_hoy}").pack(pady=5)
-
-        tk.Label(ventana_prestamo, text="Fecha estimada de devolución (YYYY-MM-DD):").pack()
+        tk.Label(ventana_prestamo, text=f"Fecha de préstamo: {fecha_hoy}", fg=tema_texto, bg=tema_fondo, font=("Arial", 11)).pack(pady=5)
+        tk.Label(ventana_prestamo, text="Fecha estimada de devolución (YYYY-MM-DD):", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_devolucion = tk.Entry(ventana_prestamo)
         entry_devolucion.pack()
 
@@ -115,22 +126,24 @@ def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
             finally:
                 con.close()
 
-        frame_botones = tk.Frame(ventana_prestamo)
+        frame_botones = tk.Frame(ventana_prestamo, bg=tema_fondo)
         frame_botones.pack(pady=20)
-
-        tk.Button(frame_botones, text="Registrar Préstamo", command=guardar_prestamo).grid(row=0, column=0, padx=10)
-        tk.Button(frame_botones, text="Volver", command=ventana_prestamo.destroy).grid(row=0, column=1, padx=10)
+        btn_registrar = tk.Button(frame_botones, text="Registrar Préstamo", command=guardar_prestamo)
+        estilo_boton(btn_registrar)
+        btn_registrar.grid(row=0, column=0, padx=10)
+        btn_volver = tk.Button(frame_botones, text="Volver", command=ventana_prestamo.destroy)
+        estilo_boton(btn_volver)
+        btn_volver.grid(row=0, column=1, padx=10)
 
     def renovar_prestamo():
         ventana_renovar = tk.Toplevel(ventana)
         ventana_renovar.title("Renovar Préstamo")
         ventana_renovar.geometry("400x300")
-
-        tk.Label(ventana_renovar, text="RUT del solicitante:").pack()
+        ventana_renovar.configure(bg=tema_fondo)
+        tk.Label(ventana_renovar, text="RUT del solicitante:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_rut = tk.Entry(ventana_renovar)
         entry_rut.pack()
-
-        tk.Label(ventana_renovar, text="Nueva fecha de devolución (YYYY-MM-DD):").pack()
+        tk.Label(ventana_renovar, text="Nueva fecha de devolución (YYYY-MM-DD):", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_nueva_fecha = tk.Entry(ventana_renovar)
         entry_nueva_fecha.pack()
 
@@ -171,9 +184,19 @@ def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
 
             con.close()
 
-        tk.Button(ventana_renovar, text="Renovar", command=guardar_renovacion).pack(pady=10)
-        tk.Button(ventana_renovar, text="Volver", command=ventana_renovar.destroy).pack()
+        btn_renovar = tk.Button(ventana_renovar, text="Renovar", command=guardar_renovacion)
+        estilo_boton(btn_renovar)
+        btn_renovar.pack(pady=10)
+        btn_volver = tk.Button(ventana_renovar, text="Volver", command=ventana_renovar.destroy)
+        estilo_boton(btn_volver)
+        btn_volver.pack()
 
-    tk.Button(frame_botones, text="Registrar Préstamo", command=registrar_prestamo).grid(row=0, column=0, padx=10)
-    tk.Button(frame_botones, text="Renovar Préstamo", command=renovar_prestamo).grid(row=0, column=1, padx=10)
-    tk.Button(frame_botones, text="Volver", command=volver_menu).grid(row=0, column=2, padx=10)
+    btn_registrar = tk.Button(frame_botones, text="Registrar Préstamo", command=registrar_prestamo)
+    estilo_boton(btn_registrar)
+    btn_registrar.grid(row=0, column=0, padx=10)
+    btn_renovar = tk.Button(frame_botones, text="Renovar Préstamo", command=renovar_prestamo)
+    estilo_boton(btn_renovar)
+    btn_renovar.grid(row=0, column=1, padx=10)
+    btn_volver = tk.Button(frame_botones, text="Volver", command=volver_menu)
+    estilo_boton(btn_volver)
+    btn_volver.grid(row=0, column=2, padx=10)
