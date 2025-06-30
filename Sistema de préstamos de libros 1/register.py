@@ -13,11 +13,17 @@ def estilo_boton(boton):
     boton.bind("<Enter>", lambda e: boton.config(bg="#e74c3c"))
     boton.bind("<Leave>", lambda e: boton.config(bg=tema_rojo))
 
+def estilo_ventana(ventana):
+    ventana.configure(bg=tema_fondo)
+
+def estilo_label(label):
+    label.configure(bg=tema_fondo, fg=tema_texto, font=("Arial", 12))
+
 def registrar_usuario():
     ventana = tk.Toplevel()
     ventana.title("Registro")
     ventana.geometry("400x300")
-    ventana.configure(bg=tema_fondo)
+    estilo_ventana(ventana)
 
     def registrar():
         usuario = entry_usuario.get()
@@ -40,11 +46,17 @@ def registrar_usuario():
         else:
             messagebox.showwarning("Campos vacíos", "Debes completar todos los campos")
 
-    tk.Label(ventana, text="Usuario", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
+    label_usuario = tk.Label(ventana, text="Usuario")
+    estilo_label(label_usuario)
+    label_usuario.pack()
+
     entry_usuario = tk.Entry(ventana)
     entry_usuario.pack()
 
-    tk.Label(ventana, text="Contraseña", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
+    label_contrasena = tk.Label(ventana, text="Contraseña")
+    estilo_label(label_contrasena)
+    label_contrasena.pack()
+
     entry_contrasena = tk.Entry(ventana, show="*")
     entry_contrasena.pack()
 
