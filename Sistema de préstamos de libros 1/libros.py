@@ -3,11 +3,22 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from db import conectar
 
+# Colores de la interfaz
+tema_fondo = "#ffffff"  # blanco
+tema_rojo = "#c0392b"  # rojo fuerte
+tema_texto = "#c0392b"  # rojo para textos
+
+def estilo_boton(boton):
+    boton.configure(bg=tema_rojo, fg="white", activebackground="#e74c3c", activeforeground="white", borderwidth=0, font=("Arial", 12, "bold"))
+    boton.bind("<Enter>", lambda e: boton.config(bg="#e74c3c"))
+    boton.bind("<Leave>", lambda e: boton.config(bg=tema_rojo))
+
 def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
     ventana_anterior.destroy()
     ventana = tk.Toplevel()
     ventana.title("Gestión de Libros")
     ventana.geometry("800x500")
+    ventana.configure(bg=tema_fondo)
 
     # Función para cargar libros
     # ... (importaciones y encabezado igual)
@@ -41,29 +52,29 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
         ventana_agregar = tk.Toplevel(ventana)
         ventana_agregar.title("Agregar Libro")
         ventana_agregar.geometry("400x400")
+        ventana_agregar.configure(bg=tema_fondo)
 
-        # Labels y Entrys
-        tk.Label(ventana_agregar, text="Código").pack()
+        tk.Label(ventana_agregar, text="Código", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_codigo = tk.Entry(ventana_agregar)
         entry_codigo.pack()
 
-        tk.Label(ventana_agregar, text="Título").pack()
+        tk.Label(ventana_agregar, text="Título", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_titulo = tk.Entry(ventana_agregar)
         entry_titulo.pack()
 
-        tk.Label(ventana_agregar, text="Autor").pack()
+        tk.Label(ventana_agregar, text="Autor", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_autor = tk.Entry(ventana_agregar)
         entry_autor.pack()
 
-        tk.Label(ventana_agregar, text="Editorial").pack()
+        tk.Label(ventana_agregar, text="Editorial", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_editorial = tk.Entry(ventana_agregar)
         entry_editorial.pack()
 
-        tk.Label(ventana_agregar, text="Descripción").pack()
+        tk.Label(ventana_agregar, text="Descripción", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_descripcion = tk.Entry(ventana_agregar)
         entry_descripcion.pack()
 
-        tk.Label(ventana_agregar, text="Categoría").pack()
+        tk.Label(ventana_agregar, text="Categoría", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         combo_categoria = ttk.Combobox(ventana_agregar, state="readonly")
         combo_categoria.pack()
 
@@ -107,7 +118,9 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
             finally:
                 con.close()
 
-        tk.Button(ventana_agregar, text="Guardar", command=guardar_libro).pack(pady=10)
+        btn_guardar = tk.Button(ventana_agregar, text="Guardar", command=guardar_libro)
+        estilo_boton(btn_guardar)
+        btn_guardar.pack(pady=10)
 
 
     # Función para eliminar libro seleccionado
@@ -139,33 +152,34 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
         ventana_editar = tk.Toplevel(ventana)
         ventana_editar.title("Editar Libro")
         ventana_editar.geometry("400x450")
+        ventana_editar.configure(bg=tema_fondo)
 
-        tk.Label(ventana_editar, text="Código").pack()
+        tk.Label(ventana_editar, text="Código", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_codigo = tk.Entry(ventana_editar)
         entry_codigo.insert(0, codigo_actual)
         entry_codigo.pack()
 
-        tk.Label(ventana_editar, text="Título").pack()
+        tk.Label(ventana_editar, text="Título", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_titulo = tk.Entry(ventana_editar)
         entry_titulo.insert(0, titulo_actual)
         entry_titulo.pack()
 
-        tk.Label(ventana_editar, text="Autor").pack()
+        tk.Label(ventana_editar, text="Autor", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_autor = tk.Entry(ventana_editar)
         entry_autor.insert(0, autor_actual)
         entry_autor.pack()
 
-        tk.Label(ventana_editar, text="Editorial").pack()
+        tk.Label(ventana_editar, text="Editorial", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_editorial = tk.Entry(ventana_editar)
         entry_editorial.insert(0, editorial_actual)
         entry_editorial.pack()
 
-        tk.Label(ventana_editar, text="Descripción").pack()
+        tk.Label(ventana_editar, text="Descripción", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_descripcion = tk.Entry(ventana_editar)
         entry_descripcion.insert(0, descripcion_actual)
         entry_descripcion.pack()
 
-        tk.Label(ventana_editar, text="Categoría").pack()
+        tk.Label(ventana_editar, text="Categoría", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         combo_categoria = ttk.Combobox(ventana_editar, state="readonly")
         combo_categoria.pack()
 
@@ -211,41 +225,23 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
             finally:
                 con.close()
 
-        tk.Button(ventana_editar, text="Guardar Cambios", command=guardar_cambios).pack(pady=10)
+        btn_guardar = tk.Button(ventana_editar, text="Guardar Cambios", command=guardar_cambios)
+        estilo_boton(btn_guardar)
+        btn_guardar.pack(pady=10)
 
 
     # Título
-    tk.Label(ventana, text="Gestión de Libros", font=("Arial", 16)).pack(pady=10)
-    frame_busqueda = tk.Frame(ventana)
+    tk.Label(ventana, text="Gestión de Libros", font=("Arial", 16, "bold"), fg=tema_texto, bg=tema_fondo).pack(pady=10)
+    frame_busqueda = tk.Frame(ventana, bg=tema_fondo)
     frame_busqueda.pack(pady=5)
 
-    tk.Label(frame_busqueda, text="Buscar por título o autor:").pack(side="left")
+    tk.Label(frame_busqueda, text="Buscar por título o autor:", fg=tema_texto, bg=tema_fondo, font=("Arial", 11)).pack(side="left")
     entry_busqueda = tk.Entry(frame_busqueda, width=30)
     entry_busqueda.pack(side="left", padx=5)
 
-    def buscar_libros():
-        termino = entry_busqueda.get()
-        if not termino.strip():
-            messagebox.showinfo("Búsqueda vacía","Ingresa un título o autor para bsucar.")
-            return
-        for row in tabla.get_children():
-            tabla.delete(row)
-        
-        con = conectar()
-        cur = con.cursor()
-        cur.execute("""
-            SELECT l.id_libro, l.codigo, l.titulo, l.autor, l.editorial, l.descripcion, c.nombre_categoria
-            FROM libro l
-            LEFT JOIN categoria c ON l.id_categoria_fk = c.id_categoria
-            WHERE l.titulo LIKE ? OR l.autor LIKE ?
-        """, (f"%{termino}%", f"%{termino}%"))
-
-        resultados = cur.fetchall()
-        for fila in resultados:
-            tabla.insert("", "end", values=fila)
-        
-        con.close()
-    tk.Button(frame_busqueda, text="Buscar", command=buscar_libros).pack(side="left", padx=5)
+    btn_buscar = tk.Button(frame_busqueda, text="Buscar", command=buscar_libros)
+    estilo_boton(btn_buscar)
+    btn_buscar.pack(side="left", padx=5)
 
     
     # Tabla
@@ -257,19 +253,21 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
     tabla.pack(fill="both", expand=True, padx=10, pady=10)
 
     # Botones
-    frame_botones = tk.Frame(ventana)
+    frame_botones = tk.Frame(ventana, bg=tema_fondo)
     frame_botones.pack(pady=10)
 
-    def volver_al_menu():
-        ventana.destroy()
-        from home import mostrar_home
-        mostrar_home(id_usuario, nombre_usuario)
+    def add_btn(text, cmd, col):
+        btn = tk.Button(frame_botones, text=text, command=cmd)
+        estilo_boton(btn)
+        btn.grid(row=0, column=col, padx=10)
 
+    add_btn("Agregar Libro", agregar_libro, 0)
+    add_btn("Eliminar Libro", eliminar_libro, 1)
+    add_btn("Recargar", cargar_libros, 2)
+    add_btn("Editar Libro", editar_libro, 3)
 
-    tk.Button(frame_botones, text="Agregar Libro", command=agregar_libro).grid(row=0, column=0, padx=10)
-    tk.Button(frame_botones, text="Eliminar Libro", command=eliminar_libro).grid(row=0, column=1, padx=10)
-    tk.Button(frame_botones, text="Editar Libro", command=editar_libro).grid(row=0, column=3, padx=10)
-    tk.Button(frame_botones, text="Recargar", command=cargar_libros).grid(row=0, column=2, padx=10)
-    tk.Button(ventana, text="Volver", command=volver_al_menu).pack(pady=10)
+    btn_volver = tk.Button(ventana, text="Volver", command=volver_al_menu)
+    estilo_boton(btn_volver)
+    btn_volver.pack(pady=10)
 
     cargar_libros()
