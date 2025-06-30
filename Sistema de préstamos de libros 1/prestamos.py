@@ -13,12 +13,18 @@ def estilo_boton(boton):
     boton.bind("<Enter>", lambda e: boton.config(bg="#e74c3c"))
     boton.bind("<Leave>", lambda e: boton.config(bg=tema_rojo))
 
+def estilo_ventana(ventana):
+    ventana.configure(bg=tema_fondo)
+
+def estilo_label(label):
+    label.configure(bg=tema_fondo, fg=tema_texto, font=("Arial", 12))
+
 def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
     ventana_anterior.destroy()
     ventana = tk.Toplevel()
     ventana.title("Gestionar Préstamos")
     ventana.geometry("800x500")
-    ventana.configure(bg=tema_fondo)
+    estilo_ventana(ventana)
 
     tk.Label(ventana, text="Gestión de Préstamos", font=("Arial", 16, "bold"), fg=tema_texto, bg=tema_fondo).pack(pady=10)
 
@@ -34,7 +40,7 @@ def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
         ventana_prestamo = tk.Toplevel(ventana)
         ventana_prestamo.title("Registrar Préstamo")
         ventana_prestamo.geometry("450x550")
-        ventana_prestamo.configure(bg=tema_fondo)
+        estilo_ventana(ventana_prestamo)
 
         tk.Label(ventana_prestamo, text="Tipo de solicitante:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         combo_tipo = ttk.Combobox(ventana_prestamo, values=["estudiante", "profesor"], state="readonly")
@@ -139,7 +145,7 @@ def ver_prestamos(ventana_anterior, id_usuario, nombre_usuario):
         ventana_renovar = tk.Toplevel(ventana)
         ventana_renovar.title("Renovar Préstamo")
         ventana_renovar.geometry("400x300")
-        ventana_renovar.configure(bg=tema_fondo)
+        estilo_ventana(ventana_renovar)
         tk.Label(ventana_renovar, text="RUT del solicitante:", fg=tema_texto, bg=tema_fondo, font=("Arial", 12, "bold")).pack()
         entry_rut = tk.Entry(ventana_renovar)
         entry_rut.pack()
