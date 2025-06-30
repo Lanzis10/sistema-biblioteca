@@ -234,16 +234,10 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
     tk.Label(ventana, text="Gestión de Libros", font=("Arial", 16, "bold"), fg=tema_texto, bg=tema_fondo).pack(pady=10)
     frame_busqueda = tk.Frame(ventana, bg=tema_fondo)
     frame_busqueda.pack(pady=5)
-
     tk.Label(frame_busqueda, text="Buscar por título o autor:", fg=tema_texto, bg=tema_fondo, font=("Arial", 11)).pack(side="left")
     entry_busqueda = tk.Entry(frame_busqueda, width=30)
     entry_busqueda.pack(side="left", padx=5)
 
-    btn_buscar = tk.Button(frame_busqueda, text="Buscar", command=buscar_libros)
-    estilo_boton(btn_buscar)
-    btn_buscar.pack(side="left", padx=5)
-
-    
     # Tabla
     columnas = ("ID", "Código", "Título", "Autor", "Editorial", "Descripción", "Categoría","Disponibilidad")
     tabla = ttk.Treeview(ventana, columns=columnas, show="headings")
@@ -251,6 +245,29 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
         tabla.heading(col, text=col)
         tabla.column(col, width=100)
     tabla.pack(fill="both", expand=True, padx=10, pady=10)
+
+    def buscar_libros():
+        termino = entry_busqueda.get()
+        if not termino.strip():
+            messagebox.showinfo("Búsqueda vacía","Ingresa un título o autor para bsucar.")
+            return
+        for row in tabla.get_children():
+            tabla.delete(row)
+        con = conectar()
+        cur = con.cursor()
+        cur.execute("""
+            SELECT l.id_libro, l.codigo, l.titulo, l.autor, l.editorial, l.descripcion, c.nombre_categoria
+            FROM libro l
+            LEFT JOIN categoria c ON l.id_categoria_fk = c.id_categoria
+            WHERE l.titulo LIKE ? OR l.autor LIKE ?
+        """, (f"%{termino}%", f"%{termino}%"))
+        resultados = cur.fetchall()
+        for fila in resultados:
+            tabla.insert("", "end", values=fila)
+        con.close()
+    btn_buscar = tk.Button(frame_busqueda, text="Buscar", command=buscar_libros)
+    estilo_boton(btn_buscar)
+    btn_buscar.pack(side="left", padx=5)
 
     # Botones
     frame_botones = tk.Frame(ventana, bg=tema_fondo)
@@ -265,7 +282,10 @@ def gestionar_libros(ventana_anterior, id_usuario, nombre_usuario):
     add_btn("Eliminar Libro", eliminar_libro, 1)
     add_btn("Recargar", cargar_libros, 2)
     add_btn("Editar Libro", editar_libro, 3)
-
+    def volver_al_menu():
+        ventana.destroy()
+        from home import mostrar_home
+        mostrar_home(id_usuario, nombre_usuario)
     btn_volver = tk.Button(ventana, text="Volver", command=volver_al_menu)
     estilo_boton(btn_volver)
     btn_volver.pack(pady=10)
