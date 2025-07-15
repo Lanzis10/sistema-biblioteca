@@ -9,8 +9,7 @@ Aplicación de escritorio desarrollada en Python que automatiza el proceso de pr
 - 📚 Gestión completa de libros (agregar, editar, eliminar, buscar)
 - 🔄 Registro, devolución y renovación de préstamos
 - 💰 Control y abono de multas por retraso
-- 📊 Generación de reportes diarios y gráficos
-- 🔔 Notificaciones por correo para recordatorios de devolución
+
 
 ## 🛠 Tecnologías utilizadas
 
